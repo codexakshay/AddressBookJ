@@ -1,8 +1,10 @@
 package com.blz.code;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBook {
 
@@ -12,7 +14,6 @@ public class AddressBook {
 	static int choice = 0;
 
 	private void addContact() {
-		System.out.println("Enter Contact Details");
 		System.out.println("Enter FirstName: ");
 		String firstName = sc.next();
 		System.out.println("Enter lastName: ");
@@ -93,7 +94,7 @@ public class AddressBook {
 
 	private void deleteContact() {
 		if (ContactList.isEmpty()) {
-			System.out.println("There are no contacts to delete in the addressbook");
+			System.out.println("Address Book is Empty");
 		} else {
 			System.out.println("Enter firstname to delete the Contact");
 			String firstName = sc.next();
@@ -119,7 +120,8 @@ public class AddressBook {
 	}
 
 	private boolean addressBookWithUniqueName() {
-		System.out.println("Enter AddressBook Name : ");
+
+		System.out.println("Enter Address Book Name : ");
 		String firstName = sc.next();
 		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(firstName));
 		if (result == true) {
@@ -131,7 +133,7 @@ public class AddressBook {
 	}
 
 	private boolean noDuplicateEntry() {
-		System.out.println("Enter your First Name [DUPLICATE CHECK] : ");
+		System.out.println("Enter Contact Name to [DUPLICATE CHECK] : ");
 		String name = sc.next();
 		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(name));
 		if (result == true) {
@@ -164,13 +166,20 @@ public class AddressBook {
 			System.out.println("No Contact from " + city + " exist");
 	}
 
+	public void sortByFirstName() {
+		Comparator<Contact> nameComparator = Comparator.comparing(Contact::getFirstName);
+		List<Contact> sortedList = new ArrayList<Contact>();
+		sortedList = ContactList.stream().sorted(nameComparator).collect(Collectors.toList());
+		sortedList.stream().forEach(i -> System.out.println(i));
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
 
 		while (choice <= 13) {
 			System.out.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n"
 					+ "4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City\n8.View By City\n"
-					+ "9.Count Based On City");
+					+ "9.Count Based On City\n10.Sort by FirstName");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -199,6 +208,9 @@ public class AddressBook {
 				break;
 			case 9:
 				book.countBasedOnCity();
+				break;
+			case 10:
+				book.sortByFirstName();
 				break;
 			default:
 				System.out.println("Invalid Option");
