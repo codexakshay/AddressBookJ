@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
+
 	public static List<Contact> ContactList = new ArrayList<Contact>();
 	static Scanner sc = new Scanner(System.in);
 
@@ -74,7 +75,7 @@ public class AddressBook {
 				ContactList.get(id).setMobileNum(mobileNum);
 				break;
 			default:
-				System.out.println("Invalid Option");
+				System.out.println("Invalid Input");
 				editContact();
 			}
 		}
@@ -117,11 +118,12 @@ public class AddressBook {
 	}
 
 	private boolean addressBookWithUniqueName() {
-		System.out.println("Enter AddressBook Name : ");
+
+		System.out.println("Enter AddressBook Name :");
 		String firstName = sc.next();
 		for (int count = 0; count < ContactList.size(); count++) {
 			if (ContactList.get(count).getFirstName().equals(firstName)) {
-				System.out.println("Already an AddressBook exist with same name");
+				System.out.println("Already an AddressBook exist with this name");
 				return false;
 			}
 		}
@@ -133,7 +135,7 @@ public class AddressBook {
 		String name = sc.next();
 		for (int count = 0; count < ContactList.size(); count++) {
 			if (ContactList.get(count).getFirstName().equals(name)) {
-				System.out.println("Exists with same name");
+				System.out.println("Address Book exists with same name");
 			} else {
 				return false;
 			}
@@ -152,12 +154,23 @@ public class AddressBook {
 		}
 	}
 
+	private void viewByCity() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter city name");
+		String city = sc.nextLine();
+		sc.close();
+		for (Contact list : ContactList) {
+			if (list.getCity().equals(city))
+				System.out.println(list);
+		}
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
 
-		while (choice <= 7) {
-			System.out.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n"
-					+ "4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City");
+		while (choice <= 5) {
+			System.out.println(
+					"1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City\n8.View By City");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -183,8 +196,11 @@ public class AddressBook {
 			case 7:
 				book.searchByCity();
 				break;
+			case 8:
+				book.viewByCity();
+				break;
 			default:
-				System.out.println("Invalid Option");
+				System.out.println("Invalid Input");
 			}
 		}
 	}
