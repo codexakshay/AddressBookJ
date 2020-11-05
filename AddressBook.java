@@ -51,31 +51,31 @@ public class AddressBook {
 			switch (choice) {
 			case 1:
 				System.out.println("Enter Address: ");
-				address = sc.nextLine();
+				address = sc.next();
 				ContactList.get(id).setAddress(address);
 				break;
 			case 2:
 				System.out.println("Enter City: ");
-				city = sc.nextLine();
+				city = sc.next();
 				ContactList.get(id).setCity(city);
 				break;
 			case 3:
 				System.out.println("Enter State: ");
-				state = sc.nextLine();
+				state = sc.next();
 				ContactList.get(id).setState(state);
 				break;
 			case 4:
 				System.out.println("Enter Zip Code: ");
-				zipCode = sc.nextLine();
+				zipCode = sc.next();
 				ContactList.get(id).setZipCode(zipCode);
 				break;
 			case 5:
 				System.out.println("Enter Mobile Number: ");
-				mobileNum = sc.nextLine();
+				mobileNum = sc.next();
 				ContactList.get(id).setMobileNum(mobileNum);
 				break;
 			default:
-				System.out.println("Invalid option");
+				System.out.println("Invalid Option");
 				editContact();
 			}
 		}
@@ -96,21 +96,32 @@ public class AddressBook {
 			System.out.println("There are no contacts to delete in the addressbook");
 		} else {
 			System.out.println("Enter firstname to delete the Contact");
-			String firstName = sc.nextLine();
+			String firstName = sc.next();
 			for (int count = 0; count < ContactList.size(); count++) {
 				if (ContactList.get(count).getFirstName().equals(firstName)) {
 					ContactList.remove(ContactList.get(count));
 				}
 			}
+			System.out.println("Contact details deleted successfully");
+		}
+	}
+
+	private void addMultipleContact() {
+		System.out.println("Enter how many contacts you want to add: ");
+		int numofContacts = sc.nextInt();
+		int createdContacts = 1;
+		while (createdContacts <= numofContacts) {
+			addContact();
+			createdContacts++;
 		}
 	}
 
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
-
-		while (choice <= 5) {
+		while (choice <= 6) {
 			System.out.println(
-					"1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details\n5.Exit ");
+					"1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details\n"
+							+ "5.Exit\n6.Add another Contact");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -124,12 +135,16 @@ public class AddressBook {
 				break;
 			case 4:
 				book.deleteContact();
+				break;
 			case 5:
 				System.exit(0);
+				break;
+			case 6:
+				book.addMultipleContact();
+				break;
 			default:
-				System.out.println("Error!");
+				System.out.println("Invalid Option");
 			}
 		}
 	}
-
 }
