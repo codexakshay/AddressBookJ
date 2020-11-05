@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
-
 	public static List<Contact> ContactList = new ArrayList<Contact>();
 	static Scanner sc = new Scanner(System.in);
 
@@ -111,13 +110,27 @@ public class AddressBook {
 		int numofContacts = sc.nextInt();
 		int createdContacts = 1;
 		while (createdContacts <= numofContacts) {
-			addContact();
+			if (addressBookWithUniqueName() == true)
+				addContact();
 			createdContacts++;
 		}
 	}
 
+	private boolean addressBookWithUniqueName() {
+		System.out.println("Enter Address Book Name :");
+		String firstName = sc.next();
+		for (int count = 0; count < ContactList.size(); count++) {
+			if (ContactList.get(count).getFirstName().equals(firstName)) {
+				System.out.println("Already an AddressBook exist with this name");
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
+
 		while (choice <= 6) {
 			System.out.println(
 					"1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details\n"
