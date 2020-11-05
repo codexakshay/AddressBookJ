@@ -75,7 +75,7 @@ public class AddressBook {
 				ContactList.get(id).setMobileNum(mobileNum);
 				break;
 			default:
-				System.out.println("Invalid Input");
+				System.out.println("Invalid Option");
 				editContact();
 			}
 		}
@@ -111,76 +111,74 @@ public class AddressBook {
 		int numofContacts = sc.nextInt();
 		int createdContacts = 1;
 		while (createdContacts <= numofContacts) {
-			if (addressBookWithUniqueName() == true)
+			if ((addressBookWithUniqueName() == true) && (noDuplicateEntry() == true)) {
 				addContact();
+			}
 			createdContacts++;
 		}
 	}
 
 	private boolean addressBookWithUniqueName() {
-
-		System.out.println("Enter AddressBook Name :");
+		System.out.println("Enter AddressBook Name : ");
 		String firstName = sc.next();
-		for (int count = 0; count < ContactList.size(); count++) {
-			if (ContactList.get(count).getFirstName().equals(firstName)) {
-				System.out.println("Already an AddressBook exist with this name");
-				return false;
-			}
+		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(firstName));
+		if (result == true) {
+			System.out.println("Already an AddressBook exist with this name");
+			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 
 	private boolean noDuplicateEntry() {
-		System.out.println("Enter your name");
+		System.out.println("Enter your First Name [DUPLICATE CHECK] : ");
 		String name = sc.next();
-		for (int count = 0; count < ContactList.size(); count++) {
-			if (ContactList.get(count).getFirstName().equals(name)) {
-				System.out.println("Address Book exists with same name");
-			} else {
-				return false;
-			}
+		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(name));
+		if (result == true) {
+			System.out.println("Already an AddressBook exist with same name");
+			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 
 	private void searchByCity() {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter city name");
-		String city = sc.nextLine();
-		sc.close();
-		for (Contact list : ContactList) {
-			if (list.getCity().equals(city))
-				System.out.println(list.firstName);
-		}
+		String city = sc.next();
+		ContactList.stream().filter(n -> n.getCity().equals(city)).forEach(n -> System.out.println(n.firstName));
 	}
 
 	private void viewByCity() {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter city name");
-		String city = sc.nextLine();
-		sc.close();
-		for (Contact list : ContactList) {
-			if (list.getCity().equals(city))
-				System.out.println(list);
-		}
+		String city = sc.next();
+		ContactList.stream().filter(n -> n.getCity().equals(city)).forEach(n -> System.out.println(n));
+	}
+
+	private void countBasedOnCity() {
+		System.out.println("Enter city name");
+		String city = sc.next();
+		long cityCount = ContactList.stream().filter(n -> n.getCity().equals(city)).count();
+		if (cityCount > 0)
+			System.out.println("Number of Contacts in " + city + " is " + cityCount);
+		else
+			System.out.println("No Contact from " + city + " exist");
 	}
 
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
 
-		while (choice <= 5) {
-			System.out.println(
-					"1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City\n8.View By City");
+		while (choice <= 13) {
+			System.out.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n"
+					+ "4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City\n8.View By City\n"
+					+ "9.Count Based On City");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
-				if ((book.addressBookWithUniqueName() && book.noDuplicateEntry()) == true) {
-					book.addContact();
-				}
+				book.addContact();
 				break;
 			case 2:
 				book.printContact();
-				break;
+				continue;
 			case 3:
 				book.editContact();
 				break;
@@ -199,8 +197,11 @@ public class AddressBook {
 			case 8:
 				book.viewByCity();
 				break;
+			case 9:
+				book.countBasedOnCity();
+				break;
 			default:
-				System.out.println("Invalid Input");
+				System.out.println("Invalid Option");
 			}
 		}
 	}
