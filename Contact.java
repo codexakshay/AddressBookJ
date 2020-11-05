@@ -81,3 +81,4 @@ public class Contact {
 				+ "\nPin Code: " + zipCode + "\nMobile Number: " + mobileNum + "\n";
 	}
 }
+//MASTER
