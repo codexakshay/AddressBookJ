@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
-
 	public static List<Contact> ContactList = new ArrayList<Contact>();
 	static Scanner sc = new Scanner(System.in);
 
@@ -51,27 +50,27 @@ public class AddressBook {
 			switch (choice) {
 			case 1:
 				System.out.println("Enter Address: ");
-				address = sc.nextLine();
+				address = sc.next();
 				ContactList.get(id).setAddress(address);
 				break;
 			case 2:
 				System.out.println("Enter City: ");
-				city = sc.nextLine();
+				city = sc.next();
 				ContactList.get(id).setCity(city);
 				break;
 			case 3:
 				System.out.println("Enter State: ");
-				state = sc.nextLine();
+				state = sc.next();
 				ContactList.get(id).setState(state);
 				break;
 			case 4:
 				System.out.println("Enter Zip Code: ");
-				zipCode = sc.nextLine();
+				zipCode = sc.next();
 				ContactList.get(id).setZipCode(zipCode);
 				break;
 			case 5:
 				System.out.println("Enter Mobile Number: ");
-				mobileNum = sc.nextLine();
+				mobileNum = sc.next();
 				ContactList.get(id).setMobileNum(mobileNum);
 				break;
 			default:
@@ -102,29 +101,27 @@ public class AddressBook {
 					ContactList.remove(ContactList.get(count));
 				}
 			}
+			System.out.println("Contact details deleted successfully");
 		}
 	}
 
 	private void addMultipleContact() {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter how many contacts you want to add: ");
 		int numofContacts = sc.nextInt();
 		int createdContacts = 1;
 		while (createdContacts <= numofContacts) {
-			if ((addressBookWithUniqueName() == true) && (noDuplicateEntry() == true)) {
+			if (addressBookWithUniqueName() == true)
 				addContact();
-			}
 			createdContacts++;
 		}
 	}
 
 	private boolean addressBookWithUniqueName() {
-		System.out.println("Enter Address Book Name :");
+		System.out.println("Enter AddressBook Name : ");
 		String firstName = sc.next();
 		for (int count = 0; count < ContactList.size(); count++) {
 			if (ContactList.get(count).getFirstName().equals(firstName)) {
-				System.out.println("Already an AddressBook exists");
-			} else {
+				System.out.println("Already an AddressBook exist with same name");
 				return false;
 			}
 		}
@@ -132,11 +129,11 @@ public class AddressBook {
 	}
 
 	private boolean noDuplicateEntry() {
-		System.out.println("Enter contact name : ");
+		System.out.println("Enter your name");
 		String name = sc.next();
 		for (int count = 0; count < ContactList.size(); count++) {
 			if (ContactList.get(count).getFirstName().equals(name)) {
-				System.out.println("Same name exists");
+				System.out.println("Exists with same name");
 			} else {
 				return false;
 			}
@@ -144,13 +141,23 @@ public class AddressBook {
 		return true;
 	}
 
+	private void searchByCity() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter city name");
+		String city = sc.nextLine();
+		sc.close();
+		for (Contact list : ContactList) {
+			if (list.getCity().equals(city))
+				System.out.println(list.firstName);
+		}
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
-		
-		while (choice <= 6) {
-			System.out
-					.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n4.Delete contact details"
-							+ "\n5.Exit\n6.Add another Contact");
+
+		while (choice <= 7) {
+			System.out.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n"
+					+ "4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -166,10 +173,16 @@ public class AddressBook {
 				break;
 			case 4:
 				book.deleteContact();
+				break;
 			case 5:
 				System.exit(0);
+				break;
 			case 6:
 				book.addMultipleContact();
+				break;
+			case 7:
+				book.searchByCity();
+				break;
 			default:
 				System.out.println("Invalid Option");
 			}
