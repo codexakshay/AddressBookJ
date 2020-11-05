@@ -75,7 +75,7 @@ public class AddressBook {
 				ContactList.get(id).setMobileNum(mobileNum);
 				break;
 			default:
-				System.out.println("Error!!");
+				System.out.println("Invalid option");
 				editContact();
 			}
 		}
@@ -92,7 +92,17 @@ public class AddressBook {
 	}
 
 	private void deleteContact() {
-
+		if (ContactList.isEmpty()) {
+			System.out.println("There are no contacts to delete in the addressbook");
+		} else {
+			System.out.println("Enter firstname to delete the Contact");
+			String firstName = sc.nextLine();
+			for (int count = 0; count < ContactList.size(); count++) {
+				if (ContactList.get(count).getFirstName().equals(firstName)) {
+					ContactList.remove(ContactList.get(count));
+				}
+			}
+		}
 	}
 
 	public static void main(String args[]) {
