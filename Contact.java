@@ -7,10 +7,10 @@ public class Contact {
 	public String city;
 	public String state;
 	public String mobileNum;
-	public String zipCode;
+	public long zipCode;
 
 	public Contact(String firstName, String lastName, String address, String city, String state, String mobileNum,
-			String zipCode) {
+			long zipCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
@@ -68,11 +68,16 @@ public class Contact {
 		this.mobileNum = mobileNum;
 	}
 
-	public String getZipCode() {
+	public long getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(String zipCode) {
+	public void setZipCode(long zipCode) {
 		this.zipCode = zipCode;
+	}
+
+	public String toString() {
+		return "Name: " + firstName + " " + lastName + "\nAddress: " + address + "\nCity: " + city + "\nState: " + state
+				+ "\nPin Code: " + zipCode + "\nMobile Number: " + mobileNum + "\n";
 	}
 }

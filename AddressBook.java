@@ -14,6 +14,7 @@ public class AddressBook {
 	static int choice = 0;
 
 	private void addContact() {
+		System.out.println("Enter Contact Details");
 		System.out.println("Enter FirstName: ");
 		String firstName = sc.next();
 		System.out.println("Enter lastName: ");
@@ -27,7 +28,7 @@ public class AddressBook {
 		System.out.println("Enter Mobile Number: ");
 		String mobileNum = sc.next();
 		System.out.println("Enter zipCode: ");
-		String zipCode = sc.next();
+		long zipCode = sc.nextLong();
 
 		Contact Contact = new Contact(firstName, lastName, address, city, state, mobileNum, zipCode);
 		ContactList.add(Contact);
@@ -38,7 +39,8 @@ public class AddressBook {
 		if (ContactList.isEmpty()) {
 			System.out.println("There are no contacts to print");
 		} else {
-			String address, city, state, mobileNum, zipCode;
+			String address, city, state, mobileNum;
+			long zipCode;
 			int id;
 			for (Contact contact : ContactList) {
 				System.out.println("ID " + ContactList.indexOf(contact) + ":\n" + contact);
@@ -67,7 +69,7 @@ public class AddressBook {
 				break;
 			case 4:
 				System.out.println("Enter Zip Code: ");
-				zipCode = sc.next();
+				zipCode = sc.nextLong();
 				ContactList.get(id).setZipCode(zipCode);
 				break;
 			case 5:
@@ -133,7 +135,7 @@ public class AddressBook {
 	}
 
 	private boolean noDuplicateEntry() {
-		System.out.println("Enter Contact Name to [DUPLICATE CHECK] : ");
+		System.out.println("Enter your First Name to check [DUPLICATE CHECK] : ");
 		String name = sc.next();
 		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(name));
 		if (result == true) {
@@ -173,13 +175,36 @@ public class AddressBook {
 		sortedList.stream().forEach(i -> System.out.println(i));
 	}
 
+	public void sortByCity() {
+		Comparator<Contact> nameComparator = Comparator.comparing(Contact::getCity);
+		List<Contact> sortedList = new ArrayList<Contact>();
+		sortedList = ContactList.stream().sorted(nameComparator).collect(Collectors.toList());
+		sortedList.stream().forEach(i -> System.out.println(i));
+	}
+
+	public void sortByState() {
+		Comparator<Contact> nameComparator = Comparator.comparing(Contact::getState);
+		List<Contact> sortedList = new ArrayList<Contact>();
+		sortedList = ContactList.stream().sorted(nameComparator).collect(Collectors.toList());
+		sortedList.stream().forEach(i -> System.out.println(i));
+	}
+
+	public void sortByZip() {
+		Comparator<Contact> nameComparator = Comparator.comparing(Contact::getZipCode);
+		List<Contact> sortedList = new ArrayList<Contact>();
+		sortedList = ContactList.stream().sorted(nameComparator).collect(Collectors.toList());
+		sortedList.stream().forEach(i -> System.out.println(i));
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
 
-		while (choice <= 13) {
+		do {
 			System.out.println("1.Add Contact\n2.Print contact details\n3.Edit contact details\n"
-					+ "4.Delete contact details\n5.Exit\n6.Add another Contact\n7.Search By City\n8.View By City\n"
-					+ "9.Count Based On City\n10.Sort by FirstName");
+					+ "4.Delete contact details\n5.Add another Contact\n6.Search By City\n7.View By City\n"
+					+ "8.Count Based On City\n9.Sort by FirstName\n10.Sort By City\n11.Sort By State\n"
+					+ "12.Sort By ZipCode\n13.Exit");
+			System.out.println("\nEnter Your choice : ");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -195,26 +220,35 @@ public class AddressBook {
 				book.deleteContact();
 				break;
 			case 5:
-				System.exit(0);
-				break;
-			case 6:
 				book.addMultipleContact();
 				break;
-			case 7:
+			case 6:
 				book.searchByCity();
 				break;
-			case 8:
+			case 7:
 				book.viewByCity();
 				break;
-			case 9:
+			case 8:
 				book.countBasedOnCity();
 				break;
-			case 10:
+			case 9:
 				book.sortByFirstName();
+				break;
+			case 10:
+				book.sortByCity();
+				break;
+			case 11:
+				book.sortByState();
+				break;
+			case 12:
+				book.sortByZip();
+				break;
+			case 13:
+				System.out.println("Bye!!");
 				break;
 			default:
 				System.out.println("Invalid Option");
 			}
-		}
+		} while (choice != 13);
 	}
 }
