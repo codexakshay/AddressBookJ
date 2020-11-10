@@ -1,5 +1,9 @@
 package com.blz.code;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -10,8 +14,21 @@ public class AddressBook {
 
 	public static List<Contact> ContactList = new ArrayList<Contact>();
 	static Scanner sc = new Scanner(System.in);
+	AddressBookFileIOService addressBookIO = new AddressBookFileIOService();
+
+	public enum IOService {
+		CONSOLE_IO, FILE_IO, DB_IO, REST_IO
+	}
 
 	static int choice = 0;
+
+	public AddressBook(List<Contact> ContactList) {
+		super();
+		this.ContactList = ContactList;
+	}
+
+	public AddressBook() {
+	}
 
 	private void addContact() {
 		System.out.println("Enter Contact Details");
@@ -96,7 +113,7 @@ public class AddressBook {
 
 	private void deleteContact() {
 		if (ContactList.isEmpty()) {
-			System.out.println("Address Book is Empty");
+			System.out.println("There are no contacts to delete in the addressbook");
 		} else {
 			System.out.println("Enter firstname to delete the Contact");
 			String firstName = sc.next();
@@ -122,12 +139,11 @@ public class AddressBook {
 	}
 
 	private boolean addressBookWithUniqueName() {
-
-		System.out.println("Enter Address Book Name : ");
+		System.out.println("Enter AddressBook Name : ");
 		String firstName = sc.next();
 		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(firstName));
 		if (result == true) {
-			System.out.println("Already an AddressBook exist with this name");
+			System.out.println("Already an AddressBook exist with same name");
 			return false;
 		} else {
 			return true;
@@ -135,11 +151,11 @@ public class AddressBook {
 	}
 
 	private boolean noDuplicateEntry() {
-		System.out.println("Enter your First Name to check [DUPLICATE CHECK] : ");
+		System.out.println("Enter your First Name to check Duplicate Entry");
 		String name = sc.next();
 		boolean result = ContactList.stream().allMatch(n -> n.getFirstName().equals(name));
 		if (result == true) {
-			System.out.println("Already an AddressBook exist with same name");
+			System.out.println("Already an AddressBook exist with this name");
 			return false;
 		} else {
 			return true;
@@ -196,6 +212,25 @@ public class AddressBook {
 		sortedList.stream().forEach(i -> System.out.println(i));
 	}
 
+	public static void writeAddressBookData(IOService ioService) {
+		if (ioService.equals(AddressBook.IOService.CONSOLE_IO))
+			System.out.println("Employee Payroll to Details : " + ContactList);
+		if (ioService.equals(AddressBook.IOService.FILE_IO))
+			new AddressBookFileIOService().writeData(ContactList);
+	}
+
+	public void readDataFromFile() {
+		System.out.println("Enter address book name: ");
+		String addressBookFile = sc.nextLine();
+		Path filePath = Paths
+				.get("F:\\BridgeLabz Fellowship Program\\practice\\AddressBookSystem\\" + addressBookFile + ".txt");
+		try {
+			Files.lines(filePath).map(line -> line.trim()).forEach(line -> System.out.println(line));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String args[]) {
 		AddressBook book = new AddressBook();
 
@@ -204,7 +239,7 @@ public class AddressBook {
 					+ "4.Delete contact details\n5.Add another Contact\n6.Search By City\n7.View By City\n"
 					+ "8.Count Based On City\n9.Sort by FirstName\n10.Sort By City\n11.Sort By State\n"
 					+ "12.Sort By ZipCode\n13.Exit");
-			System.out.println("\nEnter Your choice : ");
+			System.out.println("\nENTER CHOICE : ");
 			choice = sc.nextInt();
 			switch (choice) {
 			case 1:
@@ -244,7 +279,7 @@ public class AddressBook {
 				book.sortByZip();
 				break;
 			case 13:
-				System.out.println("Bye!!");
+				System.out.println("Exited Successfully!!");
 				break;
 			default:
 				System.out.println("Invalid Option");
@@ -252,4 +287,3 @@ public class AddressBook {
 		} while (choice != 13);
 	}
 }
-//MASTER

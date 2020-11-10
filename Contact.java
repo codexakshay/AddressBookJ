@@ -1,12 +1,19 @@
 package com.blz.code;
 
 public class Contact {
+	@CsvBindByName
 	public String firstName;
+	@CsvBindByName
 	public String lastName;
+	@CsvBindByName
 	public String address;
+	@CsvBindByName
 	public String city;
+	@CsvBindByName
 	public String state;
+	@CsvBindByName
 	public String mobileNum;
+	@CsvBindByName
 	public long zipCode;
 
 	public Contact(String firstName, String lastName, String address, String city, String state, String mobileNum,
@@ -78,7 +85,7 @@ public class Contact {
 
 	public String toString() {
 		return "Name: " + firstName + " " + lastName + "\nAddress: " + address + "\nCity: " + city + "\nState: " + state
-				+ "\nPin Code: " + zipCode + "\nMobile Number: " + mobileNum + "\n";
+				+ "\nPin Code: " + zipCode + "\nMobile Number: " + mobileNum;
+
 	}
 }
-//MASTER
