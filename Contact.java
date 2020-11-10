@@ -77,8 +77,8 @@ public class Contact {
 	}
 
 	public String toString() {
-		return "Name: " + firstName + " " + lastName + "\nAddress: " + address + "\nCity: " + city + "\nState: " + state
-				+ "\nPin Code: " + zipCode + "\nMobile Number: " + mobileNum + "\n";
+		return "Name: " + firstName + " " + lastName + "  Address: " + address + "  City: " + city + "  State: " + state
+				+ "  Pin Code: " + zipCode + "  Mobile Number: " + mobileNum;
+
 	}
 }
-//MASTER
